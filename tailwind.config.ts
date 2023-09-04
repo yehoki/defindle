@@ -15,9 +15,17 @@ const config: Config = {
           '55%': { transform: 'rotateX(90deg)' },
           '100%': { transform: 'rotateX(0)' },
         },
+        'incorrect-wiggle': {
+          '0%, 100%': {
+            transform: 'translateX(0)',
+          },
+          '12.5%, 37.5%, 62.5%, 87.5%': { transform: 'translateX(2%)' },
+          '25%, 50%, 75%': { transform: 'translateX(-2%)' },
+        },
       },
       animation: {
         flip: 'flip 1s ease forwards',
+        'incorrect-wiggle': 'incorrect-wiggle 0.5s ease forwards',
       },
       backgroundColor: {
         correct: '#538d4e',

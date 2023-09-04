@@ -8,6 +8,7 @@ interface GuessingRowProps {
   currentGuess: string;
   guessArray: string[];
   correctWord: string;
+  incorrectRow: number;
 }
 
 const GuessingRow: React.FC<GuessingRowProps> = ({
@@ -16,13 +17,18 @@ const GuessingRow: React.FC<GuessingRowProps> = ({
   currentGuess,
   guessArray,
   correctWord,
+  incorrectRow,
 }) => {
   // Determines whether or not the current row is being changed
   const isGuessing = rowNumber === currentRow;
   // Finds value for current row guess
   const rowGuess = guessArray[rowNumber];
   return (
-    <div className="grid grid-cols-5 gap-2">
+    <div
+      className={`grid grid-cols-5 gap-2 min-w-[250px]
+    ${incorrectRow === rowNumber ? 'animate-incorrect-wiggle' : ''}
+    `}
+    >
       <GuessingBox
         currentGuess={currentGuess}
         guessCol={0}

@@ -38,12 +38,22 @@ const GuessingBox: React.FC<GuessingBoxProps> = ({
     return '';
   }, [correctWord, guessCol, rowGuess, isGuessing]);
 
+  const transitionDelay = (guessCol * 2 + 1) * 100;
+
   return (
     <>
       <div
-        className={`h-16 w-16 border border-neutral-500
+        style={{ transitionDelay: `${transitionDelay}ms` }}
+        className={`
+        min-w-[40px] min-h-[40px]
+        w-10 h-10
+        md:min-w-[64px] md:min-h-[64px]
+        md:w-16 md:h-16
+        text-xl md:text-3xl
+        border border-neutral-500
   flex justify-center items-center font-bold uppercase
-  text-3xl
+  
+  transition duration-500
   ${colorDecider}
   `}
       >
