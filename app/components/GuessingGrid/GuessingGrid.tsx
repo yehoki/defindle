@@ -13,19 +13,38 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
   const [guessArray, setGuessArray] = useState<string[]>([...Array(6)]);
   const [randomWord, setRandomWord] = useState('');
   const [randomDefinition, setRandomDefinition] = useState('');
-  const [incorrectRow, setIncorrectRow] = useState<number>(-1);
+  const [incorrectRow, setIncorrectRow] = useState(-1);
+  const [winningRow, setWinningRow] = useState(-1);
+  const [awaiting, setAwaiting] = useState(false);
+  // const handleGuess = useCallback(() => {
+
+  // }, [])
   const handleKeyUp = useCallback(
     (e: KeyboardEvent) => {
-      if (currentRow > 5) {
+      if (currentRow > 5 || winningRow !== -1 || awaiting) {
         return;
       }
+      // setAwaiting(true);
       if (e.key === 'Enter') {
+        if (currentGuess.toLowerCase() === randomWord.toLowerCase()) {
+          let newGuesses = [...guessArray];
+          newGuesses[currentRow] = currentGuess;
+          setGuessArray(newGuesses);
+          setCurrentGuess('');
+          setCurrentRow(-1);
+          // console.log('Correct!');
+          setTimeout(() => {
+            setWinningRow(currentRow);
+          }, 3000);
+          return;
+        }
         if (!containedInWords(currentGuess)) {
           console.log('Not a valid word');
           if (incorrectRow === -1) {
             setIncorrectRow(currentRow);
             setTimeout(() => {
               setIncorrectRow(-1);
+              setAwaiting(false);
             }, 750);
           }
           return;
@@ -50,9 +69,10 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
       } else if (e.key === 'Backspace') {
         setCurrentGuess((prev) => prev.slice(0, -1));
       }
+      setAwaiting(false);
       // console.log(e.key, currentGuess.length, currentGuess);
     },
-    [currentGuess, currentRow, guessArray]
+    [currentGuess, currentRow, guessArray, incorrectRow, randomWord]
   );
 
   useEffect(() => {
@@ -71,9 +91,9 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
 
   return (
     <>
-      <div className="mb-16 flex flex-col justify-center items-center">
-        <p>{randomWord}</p>
-        <p>{randomDefinition}</p>
+      <div className="mb-16 mt-8 flex flex-col justify-center items-center">
+        {/* <p>{randomWord}</p> */}
+        <p className="text-lg md:text-xl">{randomDefinition}</p>
       </div>
       <section className="flex justify-center items-center mb-20">
         <div className="grid grid-rows-6 gap-2 ">
@@ -84,6 +104,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
             guessArray={guessArray}
             correctWord={randomWord}
             incorrectRow={incorrectRow}
+            winningRow={winningRow}
           />
           <GuessingRow
             currentRow={currentRow}
@@ -92,6 +113,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
             guessArray={guessArray}
             correctWord={randomWord}
             incorrectRow={incorrectRow}
+            winningRow={winningRow}
           />
           <GuessingRow
             currentRow={currentRow}
@@ -100,6 +122,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
             guessArray={guessArray}
             correctWord={randomWord}
             incorrectRow={incorrectRow}
+            winningRow={winningRow}
           />
           <GuessingRow
             currentRow={currentRow}
@@ -108,6 +131,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
             guessArray={guessArray}
             correctWord={randomWord}
             incorrectRow={incorrectRow}
+            winningRow={winningRow}
           />
           <GuessingRow
             currentRow={currentRow}
@@ -116,6 +140,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
             guessArray={guessArray}
             correctWord={randomWord}
             incorrectRow={incorrectRow}
+            winningRow={winningRow}
           />
           <GuessingRow
             currentRow={currentRow}
@@ -124,6 +149,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
             guessArray={guessArray}
             correctWord={randomWord}
             incorrectRow={incorrectRow}
+            winningRow={winningRow}
           />
         </div>
       </section>

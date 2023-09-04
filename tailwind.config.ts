@@ -19,13 +19,34 @@ const config: Config = {
           '0%, 100%': {
             transform: 'translateX(0)',
           },
-          '12.5%, 37.5%, 62.5%, 87.5%': { transform: 'translateX(2%)' },
-          '25%, 50%, 75%': { transform: 'translateX(-2%)' },
+          '12.5%, 87.5%': { transform: 'translateX(-2px)' },
+          '37.5%, 62.5%': { transform: 'translateX(4px)' },
+          '50%': { transform: 'translateX(-4px)' },
+          '25%, 75%': { transform: 'translateX(-2px)' },
+        },
+        winning: {
+          '0%, 20%': { transform: 'translateY(0)' },
+          '40%': {
+            transform: 'translateY(-30px)',
+          },
+          '50%': {
+            transform: 'translateY(5px)',
+          },
+          '60%': {
+            transform: 'translateY(-15px)',
+          },
+          '80%': {
+            transform: 'translateY(2px)',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+          },
         },
       },
       animation: {
         flip: 'flip 0.5s ease forwards',
         'incorrect-wiggle': 'incorrect-wiggle 0.5s ease forwards',
+        winning: 'winning 1s ease forwards'
       },
       backgroundColor: {
         correct: '#538d4e',

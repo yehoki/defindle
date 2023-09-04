@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 interface GuessingBoxProps {
   currentGuess: string;
@@ -8,6 +8,7 @@ interface GuessingBoxProps {
   isGuessing: boolean;
   rowGuess: string;
   correctWord: string;
+  hasWon: boolean;
 }
 
 const GuessingBox: React.FC<GuessingBoxProps> = ({
@@ -16,7 +17,10 @@ const GuessingBox: React.FC<GuessingBoxProps> = ({
   isGuessing,
   rowGuess,
   correctWord,
+  hasWon,
 }) => {
+  const [currentAnimation, setCurrentAnimation] = useState('');
+  const [currentAnimationDelay, setCurrentAnimationDelay] = useState(0);
   const extractString = useCallback(() => {
     if (currentGuess.length > guessCol) {
       return currentGuess[guessCol];
@@ -32,20 +36,30 @@ const GuessingBox: React.FC<GuessingBoxProps> = ({
       } else if (correctWord.includes(rowGuess[guessCol])) {
         return 'bg-close';
       } else {
-        return '';
+        return 'bg-[#3a3a3c]';
       }
     }
     return '';
   }, [correctWord, guessCol, rowGuess, isGuessing]);
 
   const transitionDelay = (2 * guessCol + 1) * 250;
-  const animationDelay = guessCol * 500;
+
+  useEffect(() => {
+    if (hasWon) {
+      setCurrentAnimation('animate-winning');
+      setCurrentAnimationDelay(100 * guessCol);
+    } else if (!isGuessing && rowGuess !== undefined) {
+      setCurrentAnimation('animate-flip');
+      setCurrentAnimationDelay(guessCol * 500);
+    }
+  }, [hasWon, isGuessing, rowGuess]);
+
   return (
     <>
       <div
         style={{
           transitionDelay: `${transitionDelay}ms`,
-          animationDelay: `${animationDelay}ms`,
+          animationDelay: `${currentAnimationDelay}ms`,
         }}
         className={`
         min-w-[40px] min-h-[40px]
@@ -54,10 +68,11 @@ const GuessingBox: React.FC<GuessingBoxProps> = ({
         md:w-16 md:h-16
         text-xl md:text-3xl
         border border-neutral-500
+        select-none
   flex justify-center items-center font-bold uppercase
   transition duration-100
   ${colorDecider}
-  ${!isGuessing && rowGuess !== undefined && 'animate-flip'}
+  ${currentAnimation}
   `}
       >
         {isGuessing
