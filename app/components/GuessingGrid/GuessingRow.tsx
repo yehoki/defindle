@@ -1,15 +1,55 @@
 'use client';
 
-interface GuessingRowProps {}
+import GuessingBox from './GuessingBox';
 
-const GuessingRow: React.FC<GuessingRowProps> = ({}) => {
+interface GuessingRowProps {
+  rowNumber: number;
+  currentRow: number;
+  currentGuess: string;
+  guessArray: string[];
+}
+
+const GuessingRow: React.FC<GuessingRowProps> = ({
+  rowNumber,
+  currentRow,
+  currentGuess,
+  guessArray,
+}) => {
+  // Determines whether or not the current row is being changed
+  const isGuessing = rowNumber === currentRow;
+  const rowGuess = guessArray[rowNumber];
   return (
     <div className="grid grid-cols-5 gap-2">
-      <div className="h-10 w-10 border border-white"></div>
-      <div className="h-10 w-10 border border-white"></div>
-      <div className="h-10 w-10 border border-white"></div>
-      <div className="h-10 w-10 border border-white"></div>
-      <div className="h-10 w-10 border border-white"></div>
+      <GuessingBox
+        currentGuess={currentGuess}
+        guessCol={0}
+        isGuessing={isGuessing}
+        rowGuess={rowGuess}
+      />
+      <GuessingBox
+        currentGuess={currentGuess}
+        guessCol={1}
+        isGuessing={isGuessing}
+        rowGuess={rowGuess}
+      />
+      <GuessingBox
+        currentGuess={currentGuess}
+        guessCol={2}
+        isGuessing={isGuessing}
+        rowGuess={rowGuess}
+      />
+      <GuessingBox
+        currentGuess={currentGuess}
+        guessCol={3}
+        isGuessing={isGuessing}
+        rowGuess={rowGuess}
+      />
+      <GuessingBox
+        currentGuess={currentGuess}
+        guessCol={4}
+        isGuessing={isGuessing}
+        rowGuess={rowGuess}
+      />
     </div>
   );
 };
