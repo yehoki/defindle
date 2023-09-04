@@ -1,13 +1,15 @@
 export const dateToEntry = (day: number, month: number, year: number) => {
   // Beginning on 04/09/2023 (D/MM/YYYY)
   // Day + month * 30 + (Year - 2000)
-  const BEGINNING = 4 + 8 * 30 + (2023 - 2000) * 365;
+  const BEGINNING = 4 + 8 * 31 + (2023 - 2000) * 365;
   const WORD_COUNT = 2315;
-
-  const todayNumber = day + month * 30 + (year - 2000) * 365;
+  const todayNumber = day + month * 31 + (year - 2000) * 365;
   const returnNumber = todayNumber - BEGINNING;
+
   if (returnNumber < 0) {
     return Math.floor(Math.random() * (WORD_COUNT - 1));
+  } else if (returnNumber > WORD_COUNT) {
+    return returnNumber % WORD_COUNT;
   }
   return returnNumber;
 };

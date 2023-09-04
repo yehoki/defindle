@@ -2,8 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import GuessingRow from './GuessingRow';
-import getWord from '@/app/actions/getWord';
-const dateToEntry = require('@/app/utils/helper');
+import getTodaysDefinition from '@/app/actions/getTodaysDefinition';
 
 interface GuessingGridProps {}
 
@@ -46,11 +45,10 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
   );
 
   useEffect(() => {
-    // setRandomWord(allWords[Math.floor(Math.random() * allWords.length)]);
-    // console.log(dateToEntry());
-    getWord(randomWord).then((word) => {
+    getTodaysDefinition().then((word) => {
       console.log(word);
       setRandomDefinition(word[0].meanings[0].definitions[0].definition);
+      setRandomWord(word[0].word);
     });
   }, []);
 

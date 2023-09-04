@@ -29,4 +29,16 @@ describe('When converting date to array entry', () => {
     );
     expect(convertedDate).not.toEqual(secondConvertedDate);
   });
+  test('converts the new year correctly', () => {
+    const beginningDate = Date.parse('2024-09-04');
+    let date = new Date(0);
+    date.setUTCSeconds(beginningDate / 1000);
+    const convertedDate = dateToEntry(
+      date.getDate(),
+      date.getMonth(),
+      date.getFullYear()
+    );
+    expect(convertedDate).toEqual(365);
+  });
+
 });
