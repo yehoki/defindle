@@ -38,12 +38,15 @@ const GuessingBox: React.FC<GuessingBoxProps> = ({
     return '';
   }, [correctWord, guessCol, rowGuess, isGuessing]);
 
-  const transitionDelay = (guessCol * 2 + 1) * 100;
-
+  const transitionDelay = (2 * guessCol + 1) * 250;
+  const animationDelay = guessCol * 500;
   return (
     <>
       <div
-        style={{ transitionDelay: `${transitionDelay}ms` }}
+        style={{
+          transitionDelay: `${transitionDelay}ms`,
+          animationDelay: `${animationDelay}ms`,
+        }}
         className={`
         min-w-[40px] min-h-[40px]
         w-10 h-10
@@ -52,9 +55,9 @@ const GuessingBox: React.FC<GuessingBoxProps> = ({
         text-xl md:text-3xl
         border border-neutral-500
   flex justify-center items-center font-bold uppercase
-  
-  transition duration-500
+  transition duration-100
   ${colorDecider}
+  ${!isGuessing && rowGuess !== undefined && 'animate-flip'}
   `}
       >
         {isGuessing

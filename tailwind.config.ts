@@ -24,7 +24,7 @@ const config: Config = {
         },
       },
       animation: {
-        flip: 'flip 1s ease forwards',
+        flip: 'flip 0.5s ease forwards',
         'incorrect-wiggle': 'incorrect-wiggle 0.5s ease forwards',
       },
       backgroundColor: {

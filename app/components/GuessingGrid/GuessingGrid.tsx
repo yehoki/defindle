@@ -71,59 +71,61 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
 
   return (
     <>
-      <div>
+      <div className="mb-16 flex flex-col justify-center items-center">
         <p>{randomWord}</p>
         <p>{randomDefinition}</p>
       </div>
-      <section className="grid grid-rows-6 gap-2 animate-incorrect-wiggle ">
-        <GuessingRow
-          currentRow={currentRow}
-          rowNumber={0}
-          currentGuess={currentGuess}
-          guessArray={guessArray}
-          correctWord={randomWord}
-          incorrectRow={incorrectRow}
-        />
-        <GuessingRow
-          currentRow={currentRow}
-          rowNumber={1}
-          currentGuess={currentGuess}
-          guessArray={guessArray}
-          correctWord={randomWord}
-          incorrectRow={incorrectRow}
-        />
-        <GuessingRow
-          currentRow={currentRow}
-          rowNumber={2}
-          currentGuess={currentGuess}
-          guessArray={guessArray}
-          correctWord={randomWord}
-          incorrectRow={incorrectRow}
-        />
-        <GuessingRow
-          currentRow={currentRow}
-          rowNumber={3}
-          currentGuess={currentGuess}
-          guessArray={guessArray}
-          correctWord={randomWord}
-          incorrectRow={incorrectRow}
-        />
-        <GuessingRow
-          currentRow={currentRow}
-          rowNumber={4}
-          currentGuess={currentGuess}
-          guessArray={guessArray}
-          correctWord={randomWord}
-          incorrectRow={incorrectRow}
-        />
-        <GuessingRow
-          currentRow={currentRow}
-          rowNumber={5}
-          currentGuess={currentGuess}
-          guessArray={guessArray}
-          correctWord={randomWord}
-          incorrectRow={incorrectRow}
-        />
+      <section className="flex justify-center items-center mb-20">
+        <div className="grid grid-rows-6 gap-2 ">
+          <GuessingRow
+            currentRow={currentRow}
+            rowNumber={0}
+            currentGuess={currentGuess}
+            guessArray={guessArray}
+            correctWord={randomWord}
+            incorrectRow={incorrectRow}
+          />
+          <GuessingRow
+            currentRow={currentRow}
+            rowNumber={1}
+            currentGuess={currentGuess}
+            guessArray={guessArray}
+            correctWord={randomWord}
+            incorrectRow={incorrectRow}
+          />
+          <GuessingRow
+            currentRow={currentRow}
+            rowNumber={2}
+            currentGuess={currentGuess}
+            guessArray={guessArray}
+            correctWord={randomWord}
+            incorrectRow={incorrectRow}
+          />
+          <GuessingRow
+            currentRow={currentRow}
+            rowNumber={3}
+            currentGuess={currentGuess}
+            guessArray={guessArray}
+            correctWord={randomWord}
+            incorrectRow={incorrectRow}
+          />
+          <GuessingRow
+            currentRow={currentRow}
+            rowNumber={4}
+            currentGuess={currentGuess}
+            guessArray={guessArray}
+            correctWord={randomWord}
+            incorrectRow={incorrectRow}
+          />
+          <GuessingRow
+            currentRow={currentRow}
+            rowNumber={5}
+            currentGuess={currentGuess}
+            guessArray={guessArray}
+            correctWord={randomWord}
+            incorrectRow={incorrectRow}
+          />
+        </div>
       </section>
     </>
   );
