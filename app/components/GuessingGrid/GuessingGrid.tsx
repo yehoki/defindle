@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import GuessingRow from './GuessingRow';
+import { allWords } from '@/app/utils/helper';
 
 interface GuessingGridProps {}
 
@@ -9,6 +10,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
   const [currentGuess, setCurrentGuess] = useState('');
   const [currentRow, setCurrentRow] = useState(0);
   const [guessArray, setGuessArray] = useState<string[]>([...Array(6)]);
+  const [randomWord, setRandomWord] = useState('');
 
   const handleKeyUp = useCallback(
     (e: KeyboardEvent) => {
@@ -37,10 +39,11 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
       }
       console.log(e.key, currentGuess.length, currentGuess);
     },
-    [currentGuess, currentRow]
+    [currentGuess, currentRow, guessArray]
   );
 
   useEffect(() => {
+    setRandomWord(allWords[Math.floor(Math.random() * allWords.length)]);
     window.addEventListener('keyup', handleKeyUp);
 
     return () => removeEventListener('keyup', handleKeyUp);
@@ -48,7 +51,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
 
   return (
     <section className="grid grid-rows-6 gap-2">
-      {currentRow}
+      {randomWord}
       <GuessingRow
         currentRow={currentRow}
         rowNumber={0}
