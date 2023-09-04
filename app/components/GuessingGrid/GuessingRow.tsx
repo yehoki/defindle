@@ -17,6 +17,7 @@ const GuessingRow: React.FC<GuessingRowProps> = ({
 }) => {
   // Determines whether or not the current row is being changed
   const isGuessing = rowNumber === currentRow;
+  // Finds value for current row guess
   const rowGuess = guessArray[rowNumber];
   return (
     <div className="grid grid-cols-5 gap-2">

@@ -1,5 +1,7 @@
 'use client';
 
+import { useCallback } from 'react';
+
 interface GuessingBoxProps {
   currentGuess: string;
   guessCol: number;
@@ -13,35 +15,29 @@ const GuessingBox: React.FC<GuessingBoxProps> = ({
   isGuessing,
   rowGuess,
 }) => {
-  if (!isGuessing) {
-    return (
-      <div
-        className="h-16 w-16 border border-neutral-500
-flex justify-center items-center font-bold uppercase
-text-3xl
-"
-      >
-        {rowGuess === undefined ? '' : rowGuess[guessCol]}
-      </div>
-    );
-  }
-  const extractString = () => {
+  const extractString = useCallback(() => {
     if (currentGuess.length > guessCol) {
       return currentGuess[guessCol];
     } else {
       return '';
     }
-  };
+  }, [currentGuess, guessCol]);
 
   return (
-    <div
-      className="h-16 w-16 border border-neutral-500
+    <>
+      <div
+        className="h-16 w-16 border border-neutral-500
   flex justify-center items-center font-bold uppercase
   text-3xl
   "
-    >
-      {extractString()}
-    </div>
+      >
+        {isGuessing
+          ? extractString()
+          : rowGuess === undefined
+          ? ''
+          : rowGuess[guessCol]}
+      </div>
+    </>
   );
 };
 
