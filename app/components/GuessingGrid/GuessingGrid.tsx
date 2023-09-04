@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import GuessingRow from './GuessingRow';
 import getTodaysDefinition from '@/app/actions/getTodaysDefinition';
+import { containedInWords } from '@/app/utils/helper';
 
 interface GuessingGridProps {}
 
@@ -10,7 +11,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
   const [currentGuess, setCurrentGuess] = useState('');
   const [currentRow, setCurrentRow] = useState(0);
   const [guessArray, setGuessArray] = useState<string[]>([...Array(6)]);
-  const [randomWord, setRandomWord] = useState('hairy');
+  const [randomWord, setRandomWord] = useState('');
   const [randomDefinition, setRandomDefinition] = useState('');
 
   const handleKeyUp = useCallback(
@@ -19,6 +20,10 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
         return;
       }
       if (e.key === 'Enter') {
+        if (!containedInWords(currentGuess)) {
+          console.log('Not a valid word');
+          return;
+        }
         if (currentGuess.length !== 5) {
           // console.log('Not enough');
         } else if (currentRow < 6) {
@@ -60,44 +65,52 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({}) => {
 
   return (
     <>
-      <p>{randomWord}</p>
-      <p>{randomDefinition}</p>
+      <div>
+        <p>{randomWord}</p>
+        <p>{randomDefinition}</p>
+      </div>
       <section className="grid grid-rows-6 gap-2">
         <GuessingRow
           currentRow={currentRow}
           rowNumber={0}
           currentGuess={currentGuess}
           guessArray={guessArray}
+          correctWord={randomWord}
         />
         <GuessingRow
           currentRow={currentRow}
           rowNumber={1}
           currentGuess={currentGuess}
           guessArray={guessArray}
+          correctWord={randomWord}
         />
         <GuessingRow
           currentRow={currentRow}
           rowNumber={2}
           currentGuess={currentGuess}
           guessArray={guessArray}
+          correctWord={randomWord}
         />
         <GuessingRow
           currentRow={currentRow}
           rowNumber={3}
           currentGuess={currentGuess}
           guessArray={guessArray}
+          correctWord={randomWord}
         />
         <GuessingRow
           currentRow={currentRow}
           rowNumber={4}
           currentGuess={currentGuess}
           guessArray={guessArray}
+          correctWord={randomWord}
         />
         <GuessingRow
           currentRow={currentRow}
           rowNumber={5}
           currentGuess={currentGuess}
           guessArray={guessArray}
+          correctWord={randomWord}
         />
       </section>
     </>

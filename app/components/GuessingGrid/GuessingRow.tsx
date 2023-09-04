@@ -7,6 +7,7 @@ interface GuessingRowProps {
   currentRow: number;
   currentGuess: string;
   guessArray: string[];
+  correctWord: string;
 }
 
 const GuessingRow: React.FC<GuessingRowProps> = ({
@@ -14,6 +15,7 @@ const GuessingRow: React.FC<GuessingRowProps> = ({
   currentRow,
   currentGuess,
   guessArray,
+  correctWord,
 }) => {
   // Determines whether or not the current row is being changed
   const isGuessing = rowNumber === currentRow;
@@ -26,30 +28,35 @@ const GuessingRow: React.FC<GuessingRowProps> = ({
         guessCol={0}
         isGuessing={isGuessing}
         rowGuess={rowGuess}
+        correctWord={correctWord}
       />
       <GuessingBox
         currentGuess={currentGuess}
         guessCol={1}
         isGuessing={isGuessing}
         rowGuess={rowGuess}
+        correctWord={correctWord}
       />
       <GuessingBox
         currentGuess={currentGuess}
         guessCol={2}
         isGuessing={isGuessing}
         rowGuess={rowGuess}
+        correctWord={correctWord}
       />
       <GuessingBox
         currentGuess={currentGuess}
         guessCol={3}
         isGuessing={isGuessing}
         rowGuess={rowGuess}
+        correctWord={correctWord}
       />
       <GuessingBox
         currentGuess={currentGuess}
         guessCol={4}
         isGuessing={isGuessing}
         rowGuess={rowGuess}
+        correctWord={correctWord}
       />
     </div>
   );

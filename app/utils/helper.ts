@@ -14,6 +14,10 @@ export const dateToEntry = (day: number, month: number, year: number) => {
   return returnNumber;
 };
 
+export const containedInWords = (word: string) => {
+  return allWords.includes(word);
+};
+
 export const allWords = [
   'login',
   'cling',
