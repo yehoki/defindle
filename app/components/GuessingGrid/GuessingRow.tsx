@@ -27,7 +27,8 @@ const GuessingRow: React.FC<GuessingRowProps> = ({
   const rowGuess = guessArray[rowNumber];
   return (
     <div
-      className={`grid grid-cols-5 gap-2 min-w-[250px]
+      className={`grid grid-cols-5 gap-1 md:gap-2 
+      min-w-[220px] md:min-w-[250px]
     ${incorrectRow === rowNumber ? 'animate-incorrect-wiggle' : ''}
     `}
     >

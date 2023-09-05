@@ -4,7 +4,7 @@ export default async function getTodaysDefinition() {
   try {
     const todaysDate = new Date();
     const todaysEntry = dateToEntry(
-      todaysDate.getDate(),
+      todaysDate.getDate() ,
       todaysDate.getMonth(),
       todaysDate.getFullYear()
     );
