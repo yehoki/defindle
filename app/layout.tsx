@@ -26,7 +26,7 @@ export default function RootLayout({
       <body
         className={`${roboto.className} bg-[#121214] text-white min-h-[100dvh]`}
       >
-        <InfoModal />
+        {/* <InfoModal /> */}
         <Header />
         {children}
         <Footer />

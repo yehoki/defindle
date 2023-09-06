@@ -2,20 +2,23 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import GuessingRow from './GuessingRow';
-import getTodaysDefinition from '@/app/actions/getTodaysDefinition';
 import { containedInWords } from '@/app/utils/helper';
+import { DictionaryModel } from '@/app/types/FetchTypes';
 
 interface GuessingGridProps {
-  todaysWord: any;
+  todaysWord: {
+    data: DictionaryModel[];
+    word: string;
+  };
 }
 
 const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
   const [currentGuess, setCurrentGuess] = useState('');
   const [currentRow, setCurrentRow] = useState(0);
   const [guessArray, setGuessArray] = useState<string[]>([...Array(6)]);
-  const [randomWord, setRandomWord] = useState(todaysWord[0].word);
+  const [randomWord, setRandomWord] = useState(todaysWord.word);
   const [randomDefinition, setRandomDefinition] = useState(
-    todaysWord[0].meanings[0].definitions[0].definition
+    todaysWord.data[0].shortdef[0]
   );
   const [incorrectRow, setIncorrectRow] = useState(-1);
   const [winningRow, setWinningRow] = useState(-1);
@@ -98,7 +101,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
         <p
           className="
         text-center
-        text-lg md:text-xl"
+        text-lg md:text-xl "
         >
           {randomDefinition}
         </p>

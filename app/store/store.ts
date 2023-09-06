@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
-import infoModalReducer from '@/app/reducers/InfoModalReducer';
+import infoModalReducer from '@/app/reducers/infoModalReducer';
 export const store = configureStore({
   reducer: {
     infoModalReducer,
