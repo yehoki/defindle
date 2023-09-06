@@ -23,7 +23,15 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
 
   const handleKeyUp = useCallback(
     (e: KeyboardEvent) => {
-      if (currentRow > 5 || winningRow !== -1 || awaiting) {
+      if (
+        currentRow > 5 ||
+        winningRow !== -1 ||
+        awaiting ||
+        e.key === 'Meta' ||
+        e.key === 'Alt' ||
+        e.key === 'Shift' ||
+        e.key === 'Control'
+      ) {
         return;
       }
       if (e.key === 'Enter') {
