@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Modal from './components/Modals/Modal';
 import InfoModal from './components/Modals/InfoModal';
+import InfoModalProvider from './providers/infoModalProvider';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -26,10 +26,12 @@ export default function RootLayout({
       <body
         className={`${roboto.className} bg-[#121214] text-white min-h-[100dvh]`}
       >
-        {/* <InfoModal /> */}
-        <Header />
-        {children}
-        <Footer />
+        <InfoModalProvider>
+          <InfoModal />
+          <Header />
+          {children}
+          <Footer />
+        </InfoModalProvider>
       </body>
     </html>
   );
