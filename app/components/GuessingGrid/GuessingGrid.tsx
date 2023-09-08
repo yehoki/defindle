@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import GuessingRow from './GuessingRow';
 import { containedInWords } from '@/app/utils/helper';
 import { DictionaryModel } from '@/app/types/FetchTypes';
@@ -15,7 +15,9 @@ interface GuessingGridProps {
 const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
   const [currentGuess, setCurrentGuess] = useState('');
   const [currentRow, setCurrentRow] = useState(0);
-  const [guessArray, setGuessArray] = useState<string[]>([...Array(6)]);
+  const [guessArray, setGuessArray] = useState<(string | undefined)[]>([
+    ...Array(6),
+  ]);
   const [randomWord, setRandomWord] = useState(todaysWord.word);
   const [randomDefinition, setRandomDefinition] = useState(
     todaysWord.data[0].shortdef[0]
@@ -23,6 +25,33 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
   const [incorrectRow, setIncorrectRow] = useState(-1);
   const [winningRow, setWinningRow] = useState(-1);
   const [awaiting, setAwaiting] = useState(false);
+
+  const updateStorageGuesses = useCallback(
+    (guesses: (string | undefined)[]) => {
+      localStorage.setItem('local-guesses', JSON.stringify(guesses));
+    },
+    []
+  );
+
+  useLayoutEffect(() => {
+    const localGuesses = localStorage.getItem('local-guesses');
+    if (localGuesses) {
+      const parsedGuesses = [...JSON.parse(localGuesses)].map((guess) => {
+        if (typeof guess === 'string') {
+          return guess;
+        } else {
+          return undefined;
+        }
+      });
+      const entries = parsedGuesses.filter(
+        (guess) => typeof guess === 'string'
+      );
+      if (entries.length > 0) {
+        setCurrentRow(entries.length);
+        setGuessArray(parsedGuesses);
+      }
+    }
+  }, []);
 
   const handleKeyUp = useCallback(
     (e: KeyboardEvent) => {
@@ -43,6 +72,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
           let newGuesses = [...guessArray];
           newGuesses[currentRow] = currentGuess.toLowerCase();
           setGuessArray(newGuesses);
+          updateStorageGuesses(newGuesses);
           setCurrentGuess('');
           setCurrentRow(-1);
           setTimeout(() => {
@@ -66,6 +96,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
           let newGuesses = [...guessArray];
           newGuesses[currentRow] = currentGuess.toLowerCase();
           setGuessArray(newGuesses);
+          updateStorageGuesses(newGuesses);
           setCurrentGuess('');
           setCurrentRow((prev) => prev + 1);
         }

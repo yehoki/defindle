@@ -6,7 +6,7 @@ interface GuessingBoxProps {
   currentGuess: string;
   guessCol: number;
   isGuessing: boolean;
-  rowGuess: string;
+  rowGuess: string | undefined;
   correctWord: string;
   hasWon: boolean;
 }

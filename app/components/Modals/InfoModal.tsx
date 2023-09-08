@@ -29,7 +29,7 @@ const InfoModal: React.FC<InfoModalProps> = ({}) => {
         <dialog
           id="info-modal"
           className="h-full w-full fixed bg-black/50
-    flex items-center justify-center
+    flex items-center justify-center z-50
     "
         >
           <div

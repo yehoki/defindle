@@ -6,7 +6,7 @@ interface GuessingRowProps {
   rowNumber: number;
   currentRow: number;
   currentGuess: string;
-  guessArray: string[];
+  guessArray: (string | undefined)[];
   correctWord: string;
   incorrectRow: number;
   winningRow: number;
