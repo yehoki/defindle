@@ -35,7 +35,8 @@ const InfoModal: React.FC<InfoModalProps> = ({}) => {
           <div
             ref={modalRef}
             className={`rounded-sm bg-[#121214] border-[#1a1a1c] border
-          text-white relative
+          text-white relative w-full
+          max-w-[520px]
           ${animate ? 'opacity-100' : 'opacity-0 translate-y-40'}
           transition
           `}
@@ -46,13 +47,46 @@ const InfoModal: React.FC<InfoModalProps> = ({}) => {
             >
               <RxCross2 size={20} />
             </button>
-            <div className="pt-8 px-4 pb-4 md:w-[350px]">
-              <h2>Statistics</h2>
-              <div>Stats</div>
+            <div
+              className="pt-8 px-4 pb-4
+            w-full flex justify-center flex-col items-center
+            "
+            >
+              <h2 className="pl-4 uppercase font-medium mb-2 w-[250px]">
+                Statistics
+              </h2>
+              <ul className="flex gap-8 mb-4 w-[320px]">
+                <li>
+                  <div className="text-center text-5xl font-light">12</div>
+                  <div className="text-[10px] flex items-center justify-center">
+                    Played
+                  </div>
+                </li>
+                <li>
+                  <div className="text-center text-5xl font-light">55</div>
+                  <div className="text-[10px] flex items-center justify-center">
+                    Win %
+                  </div>
+                </li>
+                <li>
+                  <div className="text-center text-5xl font-light">2</div>
+                  <div className="text-[10px] flex items-center justify-center">
+                    Current Streak
+                  </div>
+                </li>
+                <li>
+                  <div className="text-center text-5xl font-light">10</div>
+                  <div className="text-[10px] flex items-center justify-center">
+                    Max Streak
+                  </div>
+                </li>
+              </ul>
               <div>
-                <h3>Guess Distribution</h3>
-                <div>Guesses</div>
+                <h3 className="pl-4 uppercase font-medium w-[250px]">
+                  Guess Distribution
+                </h3>
               </div>
+              <div className="w-full">12</div>
             </div>
           </div>
         </dialog>

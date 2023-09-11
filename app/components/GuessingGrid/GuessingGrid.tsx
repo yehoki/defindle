@@ -12,6 +12,8 @@ interface GuessingGridProps {
   };
 }
 
+type GuessArray = (string | undefined)[];
+
 const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
   const [currentGuess, setCurrentGuess] = useState('');
   const [currentRow, setCurrentRow] = useState(0);
@@ -33,28 +35,76 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
     []
   );
 
+  class LocalStorageGuesses {
+    todaysGuesses: (string | undefined)[] = [];
+    dateToday: string = new Date().toLocaleDateString('en-GB');
+
+    constructor() {
+      this.setTodaysGuesses();
+    }
+
+    getGuessArray() {
+      return this.todaysGuesses;
+    }
+
+    private setTodaysGuesses() {
+      const localGuesses = localStorage.getItem(this.dateToday);
+      if (localGuesses) {
+        const parsedGuesses = [...JSON.parse(localGuesses)].map((guess) => {
+          if (typeof guess === 'string') {
+            return guess;
+          } else {
+            return undefined;
+          }
+        });
+        const entries = parsedGuesses.filter(
+          (guess) => typeof guess === 'string'
+        );
+        this.todaysGuesses = parsedGuesses;
+      }
+    }
+
+    setStorageGuesses(guessArray: GuessArray) {
+      localStorage.setItem(this.dateToday, JSON.stringify(guessArray));
+    }
+
+    // todaysGuesses(): string {
+    //   const today = new Date();
+    //   const formattedDate = today.toLocaleDateString('en-GB');
+    //   const todaysGuesses = localStorage.getItem(formattedDate)
+    //   return todaysGuesses
+    // }
+  }
+
   useLayoutEffect(() => {
-    const localGuesses = localStorage.getItem('local-guesses');
+    const guesses = new LocalStorageGuesses();
+    const localGuesses = guesses.getGuessArray();
     if (localGuesses) {
-      const parsedGuesses = [...JSON.parse(localGuesses)].map((guess) => {
-        if (typeof guess === 'string') {
-          return guess;
-        } else {
-          return undefined;
-        }
-      });
-      const entries = parsedGuesses.filter(
-        (guess) => typeof guess === 'string'
-      );
+      const entries = localGuesses.filter((guess) => typeof guess === 'string');
       if (entries.length > 0) {
         setCurrentRow(entries.length);
-        setGuessArray(parsedGuesses);
+        setGuessArray(localGuesses);
+        if (entries.includes(randomWord)) {
+          handleWin(entries.indexOf(randomWord));
+        }
       }
     }
   }, []);
 
+  const handleWin = useCallback(
+    (victoriousRow = currentRow) => {
+      setCurrentGuess('');
+      setCurrentRow(-1);
+      setTimeout(() => {
+        setWinningRow(victoriousRow);
+      }, 3000);
+    },
+    [currentRow]
+  );
+
   const handleKeyUp = useCallback(
     (e: KeyboardEvent) => {
+      const storageGuesses = new LocalStorageGuesses();
       if (
         currentRow > 5 ||
         winningRow !== -1 ||
@@ -72,12 +122,8 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
           let newGuesses = [...guessArray];
           newGuesses[currentRow] = currentGuess.toLowerCase();
           setGuessArray(newGuesses);
-          updateStorageGuesses(newGuesses);
-          setCurrentGuess('');
-          setCurrentRow(-1);
-          setTimeout(() => {
-            setWinningRow(currentRow);
-          }, 3000);
+          storageGuesses.setStorageGuesses(newGuesses);
+          handleWin();
           return;
         } else if (currentGuess.length !== 5) {
         } else if (
@@ -96,7 +142,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
           let newGuesses = [...guessArray];
           newGuesses[currentRow] = currentGuess.toLowerCase();
           setGuessArray(newGuesses);
-          updateStorageGuesses(newGuesses);
+          storageGuesses.setStorageGuesses(newGuesses);
           setCurrentGuess('');
           setCurrentRow((prev) => prev + 1);
         }
