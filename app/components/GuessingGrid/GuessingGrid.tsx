@@ -14,13 +14,47 @@ interface GuessingGridProps {
 
 type GuessArray = (string | undefined)[];
 
+enum GameStatus {
+  'WIN',
+  'IN_PROGRESS',
+  'LOSE',
+}
+
+type GuessDistribution = {
+  '1': number;
+  '2': number;
+  '3': number;
+  '4': number;
+  '5': number;
+  '6': number;
+  fail: number;
+};
+
+type LocalStorageStore = {
+  game: {
+    id: number;
+    board: [string, string, string, string, string, string];
+    currentRow: number;
+    status: GameStatus;
+  };
+  stats: {
+    currentStreak: number;
+    maxStreak: number;
+    guessDistribution: GuessDistribution;
+    winPercentage: number;
+    gamesPlayed: number;
+    gamesWon: number;
+    averageGuesses: number;
+    hasPlayed: boolean;
+  };
+};
+
 const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
   const [currentGuess, setCurrentGuess] = useState('');
   const [currentRow, setCurrentRow] = useState(0);
   const [guessArray, setGuessArray] = useState<(string | undefined)[]>([
     ...Array(6),
   ]);
-  const [randomWord, setRandomWord] = useState(todaysWord.word);
   const [randomDefinition, setRandomDefinition] = useState(
     todaysWord.data[0].shortdef[0]
   );
@@ -84,8 +118,8 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
       if (entries.length > 0) {
         setCurrentRow(entries.length);
         setGuessArray(localGuesses);
-        if (entries.includes(randomWord)) {
-          handleWin(entries.indexOf(randomWord));
+        if (entries.includes(todaysWord.word)) {
+          handleWin(entries.indexOf(todaysWord.word));
         }
       }
     }
@@ -118,7 +152,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
       }
       if (e.key === 'Enter') {
         setAwaiting(true);
-        if (currentGuess.toLowerCase() === randomWord.toLowerCase()) {
+        if (currentGuess.toLowerCase() === todaysWord.word.toLowerCase()) {
           let newGuesses = [...guessArray];
           newGuesses[currentRow] = currentGuess.toLowerCase();
           setGuessArray(newGuesses);
@@ -160,7 +194,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
       currentRow,
       guessArray,
       incorrectRow,
-      randomWord,
+      todaysWord.word,
       awaiting,
       winningRow,
     ]
@@ -190,7 +224,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
             rowNumber={0}
             currentGuess={currentGuess}
             guessArray={guessArray}
-            correctWord={randomWord}
+            correctWord={todaysWord.word}
             incorrectRow={incorrectRow}
             winningRow={winningRow}
           />
@@ -199,7 +233,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
             rowNumber={1}
             currentGuess={currentGuess}
             guessArray={guessArray}
-            correctWord={randomWord}
+            correctWord={todaysWord.word}
             incorrectRow={incorrectRow}
             winningRow={winningRow}
           />
@@ -208,7 +242,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
             rowNumber={2}
             currentGuess={currentGuess}
             guessArray={guessArray}
-            correctWord={randomWord}
+            correctWord={todaysWord.word}
             incorrectRow={incorrectRow}
             winningRow={winningRow}
           />
@@ -217,7 +251,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
             rowNumber={3}
             currentGuess={currentGuess}
             guessArray={guessArray}
-            correctWord={randomWord}
+            correctWord={todaysWord.word}
             incorrectRow={incorrectRow}
             winningRow={winningRow}
           />
@@ -226,7 +260,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
             rowNumber={4}
             currentGuess={currentGuess}
             guessArray={guessArray}
-            correctWord={randomWord}
+            correctWord={todaysWord.word}
             incorrectRow={incorrectRow}
             winningRow={winningRow}
           />
@@ -235,7 +269,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
             rowNumber={5}
             currentGuess={currentGuess}
             guessArray={guessArray}
-            correctWord={randomWord}
+            correctWord={todaysWord.word}
             incorrectRow={incorrectRow}
             winningRow={winningRow}
           />

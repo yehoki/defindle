@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import InfoModal from './components/Modals/InfoModal';
+import InfoModal from './components/Modals/InfoModal/InfoModal';
 import InfoModalProvider from './providers/infoModalProvider';
 
 const roboto = Roboto({

@@ -5,6 +5,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { onClose, onCloseAnimate } from '@/app/reducers/infoModalReducer';
 import { useInfoModalSelector } from '@/app/store/store';
 import { useCallback, useRef } from 'react';
+import StatisticSpread from './StatisticSpread';
 
 interface InfoModalProps {}
 
@@ -23,6 +24,7 @@ const InfoModal: React.FC<InfoModalProps> = ({}) => {
       dispatch(onClose());
     }, 300);
   }, [dispatch]);
+
   return (
     <>
       {isOpen && (
@@ -82,11 +84,11 @@ const InfoModal: React.FC<InfoModalProps> = ({}) => {
                 </li>
               </ul>
               <div>
-                <h3 className="pl-4 uppercase font-medium w-[250px]">
+                <h3 className="pl-4 uppercase font-medium w-[250px] mb-2">
                   Guess Distribution
                 </h3>
+                <StatisticSpread />
               </div>
-              <div className="w-full">12</div>
             </div>
           </div>
         </dialog>
