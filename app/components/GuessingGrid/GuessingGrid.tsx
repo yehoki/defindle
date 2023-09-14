@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import GuessingRow from './GuessingRow';
-import { containedInWords } from '@/app/utils/helper';
+import { containedInWords, dateToEntry } from '@/app/utils/helper';
 import { DictionaryModel } from '@/app/types/FetchTypes';
 
 interface GuessingGridProps {
@@ -69,6 +69,59 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
     []
   );
 
+  class LocalStorageData {
+    data: LocalStorageStore | undefined;
+
+    constructor() {
+      this.initializeStore();
+    }
+
+    private initializeStore() {
+      const answerData = localStorage.getItem('answer-data');
+      if (answerData) {
+        this.data = JSON.parse(answerData);
+      } else {
+        const todaysDate = new Date();
+        const todaysEntry = dateToEntry(
+          todaysDate.getDate(),
+          todaysDate.getMonth(),
+          todaysDate.getFullYear()
+        );
+        this.data = {
+          game: {
+            id: todaysEntry,
+            board: ['', '', '', '', '', ''],
+            currentRow: 0,
+            status: GameStatus.IN_PROGRESS,
+          },
+          stats: {
+            currentStreak: 0,
+            maxStreak: 0,
+            guessDistribution: {
+              '1': 0,
+              '2': 0,
+              '3': 0,
+              '4': 0,
+              '5': 0,
+              '6': 0,
+              fail: 0,
+            },
+            winPercentage: 0,
+            gamesPlayed: 0,
+            gamesWon: 0,
+            averageGuesses: 0,
+            hasPlayed: false,
+          },
+        };
+      }
+    }
+
+    // TODO
+    // handleWin
+    // handleLoss
+    // handleNewGuess
+  }
+
   class LocalStorageGuesses {
     todaysGuesses: (string | undefined)[] = [];
     dateToday: string = new Date().toLocaleDateString('en-GB');
@@ -111,6 +164,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
   }
 
   useLayoutEffect(() => {
+    const guessData = new LocalStorageData();
     const guesses = new LocalStorageGuesses();
     const localGuesses = guesses.getGuessArray();
     if (localGuesses) {

@@ -4,14 +4,12 @@ import { useDispatch } from 'react-redux';
 import { RxCross2 } from 'react-icons/rx';
 import { onClose, onCloseAnimate } from '@/app/reducers/infoModalReducer';
 import { useInfoModalSelector } from '@/app/store/store';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import StatisticSpread from './StatisticSpread';
 
 interface InfoModalProps {}
 
 const InfoModal: React.FC<InfoModalProps> = ({}) => {
-  const modalRef = useRef<HTMLDivElement>(null);
-
   const dispatch = useDispatch();
   const isOpen = useInfoModalSelector((state) => state.infoModalReducer.isOpen);
   const animate = useInfoModalSelector(
@@ -29,13 +27,14 @@ const InfoModal: React.FC<InfoModalProps> = ({}) => {
     <>
       {isOpen && (
         <dialog
+          onClick={handleCloseModal}
           id="info-modal"
           className="h-full w-full fixed bg-black/50
     flex items-center justify-center z-50
     "
         >
           <div
-            ref={modalRef}
+            onClick={(e) => e.stopPropagation()}
             className={`rounded-sm bg-[#121214] border-[#1a1a1c] border
           text-white relative w-full
           max-w-[520px]
@@ -50,11 +49,11 @@ const InfoModal: React.FC<InfoModalProps> = ({}) => {
               <RxCross2 size={20} />
             </button>
             <div
-              className="pt-8 px-4 pb-4
+              className="pt-16 px-4 pb-4 m
             w-full flex justify-center flex-col items-center
             "
             >
-              <h2 className="pl-4 uppercase font-medium mb-2 w-[250px]">
+              <h2 className="pl-2 uppercase font-medium mb-2 w-[250px]">
                 Statistics
               </h2>
               <ul className="flex gap-8 mb-4 w-[320px]">
@@ -83,8 +82,8 @@ const InfoModal: React.FC<InfoModalProps> = ({}) => {
                   </div>
                 </li>
               </ul>
-              <div>
-                <h3 className="pl-4 uppercase font-medium w-[250px] mb-2">
+              <div className="pb-16">
+                <h3 className="pl-2 uppercase font-medium w-[250px] mb-2">
                   Guess Distribution
                 </h3>
                 <StatisticSpread />
