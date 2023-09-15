@@ -76,50 +76,109 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
       this.initializeStore();
     }
 
+    private initializeEmptyStore() {
+      const todaysDate = new Date();
+      const todaysEntry = dateToEntry(
+        todaysDate.getDate(),
+        todaysDate.getMonth(),
+        todaysDate.getFullYear()
+      );
+      const emptyStore: LocalStorageStore = {
+        game: {
+          id: todaysEntry,
+          board: ['', '', '', '', '', ''],
+          currentRow: 0,
+          status: GameStatus.IN_PROGRESS,
+        },
+        stats: {
+          currentStreak: 0,
+          maxStreak: 0,
+          guessDistribution: {
+            '1': 0,
+            '2': 0,
+            '3': 0,
+            '4': 0,
+            '5': 0,
+            '6': 0,
+            fail: 0,
+          },
+          winPercentage: 0,
+          gamesPlayed: 0,
+          gamesWon: 0,
+          averageGuesses: 0,
+          hasPlayed: false,
+        },
+      };
+      return emptyStore;
+    }
+
     private initializeStore() {
       const answerData = localStorage.getItem('answer-data');
+      const todaysDate = new Date();
+      const todaysEntry = dateToEntry(
+        todaysDate.getDate(),
+        todaysDate.getMonth(),
+        todaysDate.getFullYear()
+      );
       if (answerData) {
-        this.data = JSON.parse(answerData);
+        const parsedData: LocalStorageStore = JSON.parse(answerData);
+        if (parsedData.game.id === todaysEntry) {
+          this.data = parsedData;
+        } else {
+          this.data = this.initializeEmptyStore();
+        }
       } else {
-        const todaysDate = new Date();
-        const todaysEntry = dateToEntry(
-          todaysDate.getDate(),
-          todaysDate.getMonth(),
-          todaysDate.getFullYear()
-        );
-        this.data = {
-          game: {
-            id: todaysEntry,
-            board: ['', '', '', '', '', ''],
-            currentRow: 0,
-            status: GameStatus.IN_PROGRESS,
-          },
-          stats: {
-            currentStreak: 0,
-            maxStreak: 0,
-            guessDistribution: {
-              '1': 0,
-              '2': 0,
-              '3': 0,
-              '4': 0,
-              '5': 0,
-              '6': 0,
-              fail: 0,
-            },
-            winPercentage: 0,
-            gamesPlayed: 0,
-            gamesWon: 0,
-            averageGuesses: 0,
-            hasPlayed: false,
-          },
-        };
+        this.data = this.initializeEmptyStore();
       }
     }
 
-    // TODO
-    // handleWin
-    // handleLoss
-    // handleNewGuess
+    private updateLocalStore() {
+      localStorage.setItem(
+        'answer-data',
+        this.data ? JSON.stringify(this.data) : ''
+      );
+    }
+
+    handleNewGuess(guess: string, guessIndex: number) {
+      if (this.data && guessIndex < 6) {
+        const newBoard = this.data.game.board;
+        newBoard[guessIndex] = guess;
+        this.data.game = {
+          ...this.data.game,
+          board: newBoard,
+          currentRow: guessIndex,
+        };
+        this.updateLocalStore();
+      }
+    }
+
+    handleWin(guess: string, guessIndex: number) {
+      if (this.data && guessIndex < 6) {
+        const newBoard = this.data.game.board;
+        newBoard[guessIndex] = guess;
+        this.data.game = {
+          ...this.data.game,
+          board: newBoard,
+          currentRow: guessIndex,
+          status: GameStatus.WIN,
+        };
+        this.updateLocalStore();
+      }
+    }
+
+    handleLoss(guess: string, guessIndex: number) {
+      if (this.data && guessIndex === 5) {
+        const newBoard = this.data.game.board;
+        newBoard[guessIndex] = guess;
+        this.data.game = {
+          ...this.data.game,
+          board: newBoard,
+          currentRow: guessIndex,
+          status: GameStatus.LOSE,
+        };
+        this.updateLocalStore();
+      }
+    }
   }
 
   class LocalStorageGuesses {
@@ -167,6 +226,7 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
     const guessData = new LocalStorageData();
     const guesses = new LocalStorageGuesses();
     const localGuesses = guesses.getGuessArray();
+    const todaysGuesses = guessData.data;
     if (localGuesses) {
       const entries = localGuesses.filter((guess) => typeof guess === 'string');
       if (entries.length > 0) {
