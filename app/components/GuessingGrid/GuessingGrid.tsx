@@ -36,23 +36,27 @@ type GuessDistribution = {
   fail: number;
 };
 
+type LocalStorageGameStore = {
+  id: number;
+  board: [string, string, string, string, string, string];
+  currentRow: number;
+  status: GameStatus;
+};
+
+type LocalStorageStatStore = {
+  currentStreak: number;
+  maxStreak: number;
+  guessDistribution: GuessDistribution;
+  winPercentage: number;
+  gamesPlayed: number;
+  gamesWon: number;
+  averageGuesses: number;
+  hasPlayed: boolean;
+};
+
 type LocalStorageStore = {
-  game: {
-    id: number;
-    board: [string, string, string, string, string, string];
-    currentRow: number;
-    status: GameStatus;
-  };
-  stats: {
-    currentStreak: number;
-    maxStreak: number;
-    guessDistribution: GuessDistribution;
-    winPercentage: number;
-    gamesPlayed: number;
-    gamesWon: number;
-    averageGuesses: number;
-    hasPlayed: boolean;
-  };
+  game: LocalStorageGameStore;
+  stats: LocalStorageStatStore;
 };
 
 const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
@@ -82,7 +86,6 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
 
   class LocalStorageData {
     data: LocalStorageStore | undefined;
-
     constructor() {
       this.initializeStore();
     }
@@ -190,6 +193,24 @@ const GuessingGrid: React.FC<GuessingGridProps> = ({ todaysWord }) => {
         this.updateLocalStore();
       }
     }
+
+    // updateWin(guessRow: 1 | 2 | 3 | 4 | 5 | 6) {
+    //   if (this.data) {
+    //     const guessRowString =
+    //     const updatedData:LocalStorageStatStore = {
+    //       currentStreak: this.data.stats.currentStreak + 1,
+    //       maxStreak: Math.max(this.data.stats.maxStreak, this.data.stats.currentStreak + 1),
+    //       guessDistribution: {
+    //         ...this.data.stats.guessDistribution,
+    //         guessRowString:
+    //       }
+    //     }
+    //   }
+    // }
+    // TODO
+    // Adding stat counting
+    // Adding stat updating
+    // Adding stat initialize -- DONE
   }
 
   useLayoutEffect(() => {
